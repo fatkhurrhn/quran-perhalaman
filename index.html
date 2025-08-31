@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daftar 30 Juz (PDF)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <div class="max-w-7xl mx-auto p-6">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Daftar 30 Juz (PDF)</h1>
+            <p class="text-gray-500">Klik untuk membuka berkas <code>juz#.PDF</code> yang berada di folder yang sama
+                dengan halaman ini.</p>
+        </header>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+            <label class="flex items-center gap-2 border rounded-lg px-3 py-2 w-full bg-white shadow-sm"
+                aria-label="Cari juz">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" />
+                </svg>
+                <input id="q" type="search" placeholder="Cari: mis. 'juz 5'" class="flex-1 outline-none bg-transparent"
+                    autocomplete="off" />
+            </label>
+            <button id="reset" type="button"
+                class="px-4 py-2 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300">Reset</button>
+        </div>
+
+        <section id="list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+            aria-label="Daftar 30 Juz">
+            <!-- Kartu akan dibuat oleh JavaScript -->
+        </section>
+
+        <footer class="text-center text-sm text-gray-500 mt-8">
+            <p>Develop by <a href="https://github.com/fatkhurrhn/" target="_blank"
+                    class="text-blue-600 hover:underline">Fatkhurrhn</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const container = document.getElementById('list');
+        const makeCard = (n) => {
+            const href = `juz${n}.PDF`;
+            const card = document.createElement('article');
+            card.className = 'bg-white border rounded-xl p-4 shadow-sm flex flex-col justify-between';
+            card.setAttribute('data-juz', n);
+            card.innerHTML = `
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="text-xs bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded-full">#${n}</span>
+          <span class="font-semibold">Juz ${n}</span>
+        </div>
+        <div class="flex gap-2">
+          <a class="flex-1 text-center px-3 py-2 rounded-lg border font-semibold hover:bg-gray-100" href="${href}" target="_blank" rel="noopener">Buka PDF</a>
+          <a class="flex-1 text-center px-3 py-2 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600" href="${href}" download>Unduh</a>
+        </div>
+      `;
+            return card;
+        };
+        for (let i = 1; i <= 30; i++) container.appendChild(makeCard(i));
+
+        const q = document.getElementById('q');
+        const reset = document.getElementById('reset');
+        const filter = () => {
+            const term = q.value.trim().toLowerCase();
+            document.querySelectorAll('#list .bg-white').forEach(card => {
+                const n = card.getAttribute('data-juz');
+                const text = `juz ${n}`;
+                const show = !term || text.includes(term) || n === term;
+                card.classList.toggle('hidden', !show);
+            });
+        };
+        q.addEventListener('input', filter);
+        reset.addEventListener('click', () => { q.value = ''; filter(); q.focus(); });
+    </script>
+</body>
+
+</html>
